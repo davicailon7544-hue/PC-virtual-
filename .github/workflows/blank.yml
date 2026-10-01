@@ -1,0 +1,54 @@
+name: Windows Cloud PC - Anydesk Melhorado
+on:
+workflow_dispatch:
+jobs:
+build:
+name: Iniciando Sistema Reforçado
+runs-on: windows-latest
+timeout-minutes: 10080
+env:
+PROCESSOR_COUNT: 8
+OPENGL: "1"
+GITHUB_PRESERVE_WORKFLOW: run
+MEMORY_GB: 16
+steps:
+- name: Baixar e Instalar Essenciais
+run: |
+  Invoke-WebRequest -Uri "URL_DO_ARQUIVO" -OutFile "Downloads.bat"
+  cmd /c Downloads.bat
+- name: Iniciar AnyDesk
+      - name: Iniciar AnyDesk
+        shell: powershell
+        run: |
+          if (Test-Path "start.bat") {
+            cmd /c start.bat
+            Start-Sleep -Seconds 10
+          }
+          else {
+            Write-Host "ERRO: Arquivo start.bat não encontrado"
+            exit 1
+          }
+
+      - name: Monitoramento
+        shell: powershell
+        run: |
+          while ($true) {
+            $anydesk = Get-Process -Name "AnyDesk" -ErrorAction SilentlyContinue
+
+            if (-not $anydesk) {
+              Write-Host "AnyDesk não está executando."
+              
+              if (Test-Path "start.bat") {
+                cmd /c start.bat
+              }
+            }
+
+            Start-Sleep -Seconds 60
+          }
+
+      - name: Limpeza Segura
+        if: always()
+        shell: powershell
+        run: |
+          Remove-Item "Downloads.bat" -Force -ErrorAction SilentlyContinue
+          Write-Host "Limpeza finalizada."
