@@ -1,31 +1,26 @@
-name: Windows Cloud PC - AnyDesk
+name: Windows Cloud PC
 
 on:
   workflow_dispatch:
 
 jobs:
-  construir:
-    name: Iniciando Sistema
+  windows:
+    name: Iniciar Windows
     runs-on: windows-latest
     timeout-minutes: 360
 
-    env:
-      OPENGL: "1"
-      GITHUB_PRESERVE_WORKFLOW: "true"
-      MEMORIA_GB: "16"
-
     steps:
-      - name: Baixar e Instalar Essenciais
+      - name: Verificar sistema
         shell: powershell
         run: |
-          Invoke-WebRequest -Uri "URL_DO_ARQUIVO" -OutFile "$env:TEMP\arquivo.bat"
-          cmd /c "$env:TEMP\arquivo.bat"
+          Write-Host "Windows iniciado"
+          Write-Host "Processadores: $env:NUMBER_OF_PROCESSORS"
+          Get-ComputerInfo | Select-Object WindowsProductName, WindowsVersion
 
-      - name: Iniciar AnyDesk
+      - name: Teste
         shell: powershell
         run: |
-          Write-Host "Iniciando AnyDesk..."
-          # coloque aqui apenas comandos necessários para a instalação/configuração
+          Write-Host "Workflow funcionando corretamente!"
 - name: Iniciar AnyDesk
       - name: Iniciar AnyDesk
         shell: powershell
