@@ -1,21 +1,31 @@
-name: Windows Cloud PC - Anydesk Melhorado
+name: Windows Cloud PC - AnyDesk
+
 on:
-workflow_dispatch:
+  workflow_dispatch:
+
 jobs:
-build:
-name: Iniciando Sistema Reforçado
-runs-on: windows-latest
-timeout-minutes: 10080
-env:
-PROCESSOR_COUNT: 8
-OPENGL: "1"
-GITHUB_PRESERVE_WORKFLOW: run
-MEMORY_GB: 16
-steps:
-- name: Baixar e Instalar Essenciais
-run: |
-  Invoke-WebRequest -Uri "URL_DO_ARQUIVO" -OutFile "Downloads.bat"
-  cmd /c Downloads.bat
+  construir:
+    name: Iniciando Sistema
+    runs-on: windows-latest
+    timeout-minutes: 360
+
+    env:
+      OPENGL: "1"
+      GITHUB_PRESERVE_WORKFLOW: "true"
+      MEMORIA_GB: "16"
+
+    steps:
+      - name: Baixar e Instalar Essenciais
+        shell: powershell
+        run: |
+          Invoke-WebRequest -Uri "URL_DO_ARQUIVO" -OutFile "$env:TEMP\arquivo.bat"
+          cmd /c "$env:TEMP\arquivo.bat"
+
+      - name: Iniciar AnyDesk
+        shell: powershell
+        run: |
+          Write-Host "Iniciando AnyDesk..."
+          # coloque aqui apenas comandos necessários para a instalação/configuração
 - name: Iniciar AnyDesk
       - name: Iniciar AnyDesk
         shell: powershell
